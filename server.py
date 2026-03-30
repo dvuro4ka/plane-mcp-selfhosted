@@ -363,8 +363,13 @@ def get_me() -> dict:
 if __name__ == "__main__":
     transport = os.getenv("MCP_TRANSPORT", "stdio")
     if transport == "sse":
-        mcp.settings.host = "0.0.0.0"
-        mcp.settings.port = int(os.getenv("MCP_PORT", "8000"))
-        mcp.run(transport="sse")
+        import uvicorn
+        app = mcp.sse_app()
+        uvicorn.run(
+            app,
+            host="0.0.0.0",
+            port=int(os.getenv("MCP_PORT", "8000")),
+            forwarded_allow_ips="*",
+        )
     else:
         mcp.run(transport="stdio")
