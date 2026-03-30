@@ -13,6 +13,7 @@ from typing import Any
 
 import httpx
 from mcp.server.fastmcp import FastMCP
+from mcp.server.transport_security import TransportSecuritySettings
 
 # --- Configuration ---
 
@@ -21,10 +22,15 @@ API_KEY = os.getenv("PLANE_API_KEY", "")
 WORKSPACE = os.getenv("PLANE_WORKSPACE_SLUG", "it")
 SESSION_COOKIE = os.getenv("PLANE_SESSION_COOKIE", "")
 CSRF_TOKEN = os.getenv("PLANE_CSRF_TOKEN", "")
+MCP_HOST = os.getenv("MCP_PUBLIC_HOST", "plane-mcp.akfixdev.ru")
 
 mcp = FastMCP(
     "Plane Self-Hosted",
     instructions="MCP server for self-hosted Plane instance",
+    transport_security=TransportSecuritySettings(
+        enable_dns_rebinding_protection=True,
+        allowed_hosts=[MCP_HOST, "localhost:*", "127.0.0.1:*"],
+    ),
 )
 
 
