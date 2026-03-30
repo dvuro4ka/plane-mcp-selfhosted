@@ -9,9 +9,10 @@ RUN pip install --no-cache-dir uv && \
 
 COPY server.py .
 
+ENV PATH="/app/.venv/bin:$PATH"
 ENV MCP_TRANSPORT=sse
 ENV MCP_PORT=8000
 
 EXPOSE 8000
 
-CMD ["uv", "run", "python", "server.py"]
+CMD ["python", "server.py"]
